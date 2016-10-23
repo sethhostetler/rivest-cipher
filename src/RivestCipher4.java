@@ -22,61 +22,8 @@ public class RivestCipher4
         final String keyString = "DISCRETEDISCRETEDISCRETEDISCRETE";
         System.out.println(keyString);        
         
-        final Map<Character, Integer> map;        
-        map = new HashMap<>();
-        map.put('@', 0);
-        map.put('A', 1);
-        map.put('B', 2);
-        map.put('C', 3);
-        map.put('D', 4);
-        map.put('E', 5);
-        map.put('F', 6);
-        map.put('G', 7);
-        map.put('H', 8);
-        map.put('I', 9);
-        map.put('J', 10);
-        map.put('K', 11);
-        map.put('L', 12);
-        map.put('M', 13);
-        map.put('N', 14);
-        map.put('O', 15);
-        map.put('P', 16);
-        map.put('Q', 17);
-        map.put('R', 18);
-        map.put('S', 19);
-        map.put('T', 20);
-        map.put('U', 21);
-        map.put('V', 22);
-        map.put('W', 23);
-        map.put('X', 24);
-        map.put('Y', 25);
-        map.put('Z', 26);
-        map.put('_', 31);
-        
 
-        
-        int[] key = new int[keyString.length()];
-        for(int i = 0; i < keyString.toCharArray().length; i++)
-        {
-//            final Integer val;
-            key[i] = map.get(keyString.toCharArray()[i]);
-            /*
-            if(val == null)
-            {   
-                System.out.println("Error!");
-            }
-            else
-            {
-                key[i] = val;
-            }
-            */
-        }
-        
-//        for(int i = 0; i < key.length; i++)
-//        {
-//            System.out.print(key[i]+" ");
-//        }         
-//        System.out.println("\n*** ***");
+        int[] key = stringToNumArray(keyString);    
         
         
         int bitSize = 5;
@@ -167,55 +114,12 @@ public class RivestCipher4
     
     public static int[] stringToNumArray(String pass)
     {
-        int[] output = new int[pass.length()];
-        final Map<Character, Integer> map;        
-        map = new HashMap<>();
-        map.put('@', 0);
-        map.put('A', 1);
-        map.put('B', 2);
-        map.put('C', 3);
-        map.put('D', 4);
-        map.put('E', 5);
-        map.put('F', 6);
-        map.put('G', 7);
-        map.put('H', 8);
-        map.put('I', 9);
-        map.put('J', 10);
-        map.put('K', 11);
-        map.put('L', 12);
-        map.put('M', 13);
-        map.put('N', 14);
-        map.put('O', 15);
-        map.put('P', 16);
-        map.put('Q', 17);
-        map.put('R', 18);
-        map.put('S', 19);
-        map.put('T', 20);
-        map.put('U', 21);
-        map.put('V', 22);
-        map.put('W', 23);
-        map.put('X', 24);
-        map.put('Y', 25);
-        map.put('Z', 26);
-        map.put('_', 31);
-        
-
-        
-        int[] key = new int[pass.length()];
-        for(int i = 0; i < pass.toCharArray().length; i++)
+        int[] output = new int[pass.length()];    
+        for(int i = 0; i < output.length; i++)
         {
-//            final Integer val;
-            key[i] = map.get(pass.toCharArray()[i]);
-            /*
-            if(val == null)
-            {   
-                System.out.println("Error!");
-            }
-            else
-            {
-                key[i] = val;
-            }
-            */
+            output[i] = pass.charAt(i) - 64;
+            //System.out.print(output[i] + " ");
+            System.out.println(output[i] + "-" + pass.charAt(i));
         }
         return output;
     }

@@ -21,17 +21,19 @@ public class RivestCipher4
 
         String inputKey = "DISCRETE";
         int bitSize = 5;
+        int randNumCount = 5;        //Represents size of output
+        
         int stateArraySize = (int) Math.pow(2, bitSize);
         
         final String keyString = extendKey(inputKey, stateArraySize);
         System.out.println(keyString);        
+        
         int[] key = stringToNumArray(keyString);    
-                
         
         int[] state = new int[stateArraySize];
         stateShuffle(state, key);
 
-        int randNumCount = 5;        //Represents size of output
+        
         int[] answerAsNum = numberGen(state, randNumCount);
 
         System.out.println("Resulting numbers:");

@@ -29,56 +29,13 @@ public class RivestCipher4
         int bitSize = 5;
         int base = 2;
         int stateArraySize = (int) Math.pow(2, bitSize);
+        
         int[] state = new int[stateArraySize];
-        for(int i = 0; i < state.length; i++)
-        {
-            state[i] = i;
-        }        
+        stateShuffle(state, key);
 
-        
-        int j = 0;
-        for(int i = 0; i < stateArraySize; i++)
-        {
-            //System.out.println("J: " + j + " state[" + i + "]: " + state[i] + " and key[" + i + "]: " + key[i]);
-            j = (j + state[i] + key[i]) % stateArraySize;
-            //System.out.println("Switch state " + j + ": " + state[j] + " and " + i + ": " + state[i]);
-            int temp = state[i];
-            state[i] = state[j];
-            state[j] = temp;
-            //System.out.println("After switch: state " + j + ": " + state[j] + " and " + i + ": " + state[i]);
-            //System.out.println();
-        }
-//        for (int count = 0; count < state.length; count ++)
-//        {
-//            System.out.println(state[count]);
-//        }
-        
-        System.out.println();
-        j = 0;
-        int i = 0;
-        int randNumCount = 5;        
-        int[] answerAsNum = new int[randNumCount+1];
-        while (i < 5)//randNumCount-1)
-        {
-            i++;
-            //System.out.println("i: " + i + "  j: " + j);
-            if(i > randNumCount) { break;}
-            j = (j + state[i]) % stateArraySize;
-            //System.out.println("i: " + i + "  j: " + j);            
-            int temp = state[i];
-            state[i] = state[j];
-            state[j] = temp;
-            //System.out.println("State[" + i + "]: " + state[i] + "; State[" + j + "]: " + state[j]);
-            answerAsNum[i] = state[(state[i] + state[j]) % stateArraySize];
-            //System.out.println(answerAsNum[i]);
-            //answerAsNum[i] = convertToBinary(answerAsNum[i]);
-        }
-//        System.out.println();
-//        for (int count = 0; count < state.length; count ++)
-//        {
-//            System.out.println(state[count]);
-//        }
-        
+        int randNumCount = 5;        //Represents size of output
+        int[] answerAsNum = numberGen(state, randNumCount);
+
         System.out.println("Resulting numbers:");
         for (int count = 1; count < answerAsNum.length; count ++)
         {
@@ -119,9 +76,63 @@ public class RivestCipher4
         {
             output[i] = pass.charAt(i) - 64;
             //System.out.print(output[i] + " ");
-            System.out.println(output[i] + "-" + pass.charAt(i));
+            //System.out.println(output[i] + "-" + pass.charAt(i));
         }
         return output;
+    }
+    
+    public static void stateShuffle(int[] state, int[] key)
+    {
+
+        for(int i = 0; i < state.length; i++)
+        {
+            state[i] = i;
+        } 
+        
+        int j = 0;
+        for(int i = 0; i < state.length; i++)
+        {
+            //System.out.println("J: " + j + " state[" + i + "]: " + state[i] + " and key[" + i + "]: " + key[i]);
+            j = (j + state[i] + key[i]) % state.length;
+            //System.out.println("Switch state " + j + ": " + state[j] + " and " + i + ": " + state[i]);
+            int temp = state[i];
+            state[i] = state[j];
+            state[j] = temp;
+            //System.out.println("After switch: state " + j + ": " + state[j] + " and " + i + ": " + state[i]);
+            //System.out.println();
+        }
+//        for (int count = 0; count < state.length; count ++)
+//        {
+//            System.out.println(state[count]);
+//        }
+    }
+    
+    public static int[] numberGen(int[] state, int size)
+    {
+        int j = 0;
+        int i = 0;
+        int[] outputNumList = new int[size+1];
+        while (i < size)
+        {
+            i++;
+            //System.out.println("i: " + i + "  j: " + j);
+            if(i > size) { break;}
+            j = (j + state[i]) % state.length;
+            //System.out.println("i: " + i + "  j: " + j);            
+            int temp = state[i];
+            state[i] = state[j];
+            state[j] = temp;
+            //System.out.println("State[" + i + "]: " + state[i] + "; State[" + j + "]: " + state[j]);
+            outputNumList[i] = state[(state[i] + state[j]) % state.length];
+            //System.out.println(answerAsNum[i]);
+            //answerAsNum[i] = convertToBinary(answerAsNum[i]);
+        }
+//        System.out.println();
+//        for (int count = 0; count < state.length; count ++)
+//        {
+//            System.out.println(state[count]);
+//        }
+        return outputNumList;
     }
     
     public static int convertToBinary(int decimalForm)

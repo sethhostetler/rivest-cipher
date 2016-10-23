@@ -16,19 +16,17 @@ public class RivestCipher4
 
     public static void main(String[] args) 
     {
-
         //Still need to implement an automatic extension process 
         // - to fill out the rest of the blocks in the key array
-        final String keyString = "DISCRETEDISCRETEDISCRETEDISCRETE";
-        System.out.println(keyString);        
-        
 
-        int[] key = stringToNumArray(keyString);    
-        
-        
+        String inputKey = "DISCRETE";
         int bitSize = 5;
-        int base = 2;
         int stateArraySize = (int) Math.pow(2, bitSize);
+        
+        final String keyString = extendKey(inputKey, stateArraySize);
+        System.out.println(keyString);        
+        int[] key = stringToNumArray(keyString);    
+                
         
         int[] state = new int[stateArraySize];
         stateShuffle(state, key);
@@ -42,31 +40,21 @@ public class RivestCipher4
             System.out.println(answerAsNum[count] + " ");
         }
         
-        String[] binaryString = new String[answerAsNum.length];
-        for (int count = 1; count < binaryString.length; count ++)
+        String[] binaryString = numberToBinary(answerAsNum, bitSize);
+             
+    }
+    
+    public static String extendKey(String key, int arraySize)
+    {
+        String fullKey = "";
+        while (fullKey.length() < arraySize)
         {
-            binaryString[count] = Integer.toBinaryString(answerAsNum[count]);
-            //System.out.println(binaryString[count] + " length: " + binaryString[count].length());
-            if (binaryString[count].length() < bitSize)
-            {
-                int lengthDifference = bitSize - binaryString[count].length();
-                /*
-                System.out.println("Difference in lengths: " + lengthDifference);
-                System.out.println(binaryString[count] + " length: " + binaryString[count].length());  
-                */
-                String lengthFixed = new String(new char[lengthDifference]).replace("\0", "0");
-                binaryString[count] = lengthFixed + binaryString[count];
-                /*
-                System.out.println(binaryString[count] + " length: " + binaryString[count].length());    
-                System.out.println("******");
-                */
-            }
+            fullKey += key;
         }
-        System.out.println("Answers in binary:");
-        for (int count = 1; count < binaryString.length; count ++)
-        {
-            System.out.println(binaryString[count] + " ");
-        }        
+        //System.out.println(fullKey);
+        fullKey = fullKey.substring(0, arraySize);
+        //System.out.println(fullKey);
+        return fullKey;
     }
     
     public static int[] stringToNumArray(String pass)
@@ -134,6 +122,37 @@ public class RivestCipher4
 //        }
         return outputNumList;
     }
+    
+    public static String[] numberToBinary(int[] numList, int bitSize)
+    {
+        String[] binaryString = new String[numList.length];
+        for (int count = 1; count < binaryString.length; count ++)
+        {
+            binaryString[count] = Integer.toBinaryString(numList[count]);
+            //System.out.println(binaryString[count] + " length: " + binaryString[count].length());
+            if (binaryString[count].length() < bitSize)
+            {
+                int lengthDifference = bitSize - binaryString[count].length();
+                /*
+                System.out.println("Difference in lengths: " + lengthDifference);
+                System.out.println(binaryString[count] + " length: " + binaryString[count].length());  
+                */
+                String lengthFixed = new String(new char[lengthDifference]).replace("\0", "0");
+                binaryString[count] = lengthFixed + binaryString[count];
+                /*
+                System.out.println(binaryString[count] + " length: " + binaryString[count].length());    
+                System.out.println("******");
+                */
+            }
+        }
+        System.out.println("Answers in binary:");
+        for (int count = 1; count < binaryString.length; count ++)
+        {
+            System.out.println(binaryString[count] + " ");
+        } 
+        return binaryString;
+    }
+    
     
     public static int convertToBinary(int decimalForm)
     {

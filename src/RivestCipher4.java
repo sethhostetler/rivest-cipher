@@ -43,14 +43,54 @@ public class RivestCipher4
         }
         
         String[] binaryString = numberToBinary(answerAsNum, bitSize);
-        
+        System.out.println("Resulting number in binary:");
+        for(String s: binaryString)
+        {
+            System.out.println(s);
+        }
         
         System.out.println();
         
         String message = "XNV@H";
         int[] messageArray = stringToNumArray(message);
         String[] messageString = numberToBinary(messageArray, bitSize);
-             
+        
+        System.out.println("Message in Binary:");
+        for(String s: messageString)
+        {
+            System.out.println(s);
+        }
+        
+        System.out.println("\nXOR of " + messageString[0] + " and " + binaryString[0] + ": ");
+        System.out.println(binaryXOR(messageString[0],binaryString[0]));
+        
+        String[] answerArray = new String[binaryString.length];        
+        if( binaryString.length == messageString.length)
+        {
+
+            for(int i = 0; i < answerArray.length; i++)
+            {
+                answerArray[i] = binaryXOR(binaryString[i], messageString[i]);
+            }
+        }
+        
+        System.out.println("Resulting binary numbers:");
+        for(String s: answerArray)
+        {
+            System.out.println(s);
+        }
+        
+        int[] intOutput = binaryStringToInt(answerArray);
+        System.out.println("Decimal Integer output");
+        String output = "";
+        for(int i: intOutput)
+        {
+            System.out.println(i);
+            output += String.valueOf((char)(i + 64));
+        }
+        
+        System.out.println(output);
+        
     }
     
     public static String extendKey(String key, int arraySize)
@@ -122,7 +162,6 @@ public class RivestCipher4
             //System.out.println("State[" + i + "]: " + state[i] + "; State[" + j + "]: " + state[j]);
             outputNumList[i-1] = state[(state[i] + state[j]) % state.length];
             //System.out.println(answerAsNum[i]);
-            //answerAsNum[i] = convertToBinary(answerAsNum[i]);
         }
 //        System.out.println();
 //        for (int count = 0; count < state.length; count ++)
@@ -154,41 +193,26 @@ public class RivestCipher4
                 */
             }
         }
-        System.out.println("Answers in binary:");
-        for (int count = 0; count < binaryString.length; count ++)
-        {
-            System.out.println(binaryString[count] + " ");
-        } 
+//        System.out.println("Answers in binary:");
+//        for (int count = 0; count < binaryString.length; count ++)
+//        {
+//            System.out.println(binaryString[count] + " ");
+//        } 
         return binaryString;
     }
-    
-    
-    public static int convertToBinary(int decimalForm)
-    {
-        int binary = 0;
-        binary = Integer.parseInt(Integer.toBinaryString(decimalForm));
-        return binary;        
+
+    public static String binaryXOR(String num1, String num2)
+    {   
+        return Integer.toBinaryString(Integer.parseInt(num1, 2) ^ Integer.parseInt(num2, 2));
     }
-    
-    public static int convertToDecimal(int binary)
-{
-    int decimal = 0;
-    decimal = Integer.parseInt(Integer.toBinaryString(binary),2);
-    return decimal;        
-}
-    
-    public static int singleXOR(int num1, int num2)
+
+    public static int[] binaryStringToInt(String[] binary)
     {
-        int xor = 0;
-        if( ( num1 == 1 || num2 == 1 ) && ! ( num1 == 1 && num2 == 1 ) )
+        int[] output = new int[binary.length];
+        for(int i = 0; i < output.length; i++)
         {
-            xor = 1;
+            output[i] = Integer.parseInt(binary[i], 2);
         }
-        return xor;
+        return output;
     }
-//    public static int fullXOR(int num1, int num2)
-//    {
-//        
-//        return 
-//    }
 }

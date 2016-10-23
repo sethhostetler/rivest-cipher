@@ -37,12 +37,19 @@ public class RivestCipher4
         int[] answerAsNum = numberGen(state, randNumCount);
 
         System.out.println("Resulting numbers:");
-        for (int count = 1; count < answerAsNum.length; count ++)
+        for (int count = 0; count < answerAsNum.length; count ++)
         {
             System.out.println(answerAsNum[count] + " ");
         }
         
         String[] binaryString = numberToBinary(answerAsNum, bitSize);
+        
+        
+        System.out.println();
+        
+        String message = "XNV@H";
+        int[] messageArray = stringToNumArray(message);
+        String[] messageString = numberToBinary(messageArray, bitSize);
              
     }
     
@@ -101,7 +108,7 @@ public class RivestCipher4
     {
         int j = 0;
         int i = 0;
-        int[] outputNumList = new int[size+1];
+        int[] outputNumList = new int[size];
         while (i < size)
         {
             i++;
@@ -113,7 +120,7 @@ public class RivestCipher4
             state[i] = state[j];
             state[j] = temp;
             //System.out.println("State[" + i + "]: " + state[i] + "; State[" + j + "]: " + state[j]);
-            outputNumList[i] = state[(state[i] + state[j]) % state.length];
+            outputNumList[i-1] = state[(state[i] + state[j]) % state.length];
             //System.out.println(answerAsNum[i]);
             //answerAsNum[i] = convertToBinary(answerAsNum[i]);
         }
@@ -128,7 +135,7 @@ public class RivestCipher4
     public static String[] numberToBinary(int[] numList, int bitSize)
     {
         String[] binaryString = new String[numList.length];
-        for (int count = 1; count < binaryString.length; count ++)
+        for (int count = 0; count < binaryString.length; count ++)
         {
             binaryString[count] = Integer.toBinaryString(numList[count]);
             //System.out.println(binaryString[count] + " length: " + binaryString[count].length());
@@ -148,7 +155,7 @@ public class RivestCipher4
             }
         }
         System.out.println("Answers in binary:");
-        for (int count = 1; count < binaryString.length; count ++)
+        for (int count = 0; count < binaryString.length; count ++)
         {
             System.out.println(binaryString[count] + " ");
         } 

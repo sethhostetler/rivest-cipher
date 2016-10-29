@@ -12,17 +12,13 @@ public class RivestCipher4
 
     public static void main(String[] args) 
     {
-        //Still need to implement an automatic extension process 
-        // - to fill out the rest of the blocks in the key array
-
         String inputKey = "DISCRETE";
         int bitSize = 5;
         int randNumCount = 5;        //Represents size of output
         
         int stateArraySize = (int) Math.pow(2, bitSize);
         
-        final String keyString = extendKey(inputKey, stateArraySize);
-        System.out.println(keyString);        
+        final String keyString = extendKey(inputKey, stateArraySize);     
         
         int[] key = stringToNumArray(keyString);    
         
@@ -31,34 +27,12 @@ public class RivestCipher4
 
         
         int[] answerAsNum = numberGen(state, randNumCount);
-
-        System.out.println("Resulting numbers:");
-        for (int count = 0; count < answerAsNum.length; count ++)
-        {
-            System.out.println(answerAsNum[count] + " ");
-        }
         
         String[] binaryString = numberToBinary(answerAsNum, bitSize);
-        System.out.println("Resulting number in binary:");
-        for(String s: binaryString)
-        {
-            System.out.println(s);
-        }
-        
-        System.out.println();
         
         String message = "XNV@H";
         int[] messageArray = stringToNumArray(message);
         String[] messageString = numberToBinary(messageArray, bitSize);
-        
-        System.out.println("Message in Binary:");
-        for(String s: messageString)
-        {
-            System.out.println(s);
-        }
-        
-        System.out.println("\nXOR of " + messageString[0] + " and " + binaryString[0] + ": ");
-        System.out.println(binaryXOR(messageString[0],binaryString[0]));
         
         String[] answerArray = new String[binaryString.length];        
         if( binaryString.length == messageString.length)
@@ -70,22 +44,9 @@ public class RivestCipher4
             }
         }
         
-        System.out.println("Resulting binary numbers:");
-        for(String s: answerArray)
-        {
-            System.out.println(s);
-        }
-        
         int[] intOutput = binaryStringToInt(answerArray);
-        System.out.println("Decimal Integer output");
-        String output = "";
-        for(int i: intOutput)
-        {
-            System.out.println(i);
-            output += String.valueOf((char)(i + 64));
-        }
         
-        System.out.println(output);
+        System.out.println(intArrayToString(intOutput));
         
     }
     
@@ -215,6 +176,20 @@ public class RivestCipher4
         {
             output[i] = Integer.parseInt(binary[i], 2);
         }
+        return output;
+    }
+    
+    public static String intArrayToString(int[] numbers)
+    {
+        /*
+        Description:    This method converts the integer array to one String.
+        */        
+        String output = "";
+        for(int i: numbers)
+        {
+            output += String.valueOf((char)(i + 64));
+        }
+        
         return output;
     }
 }

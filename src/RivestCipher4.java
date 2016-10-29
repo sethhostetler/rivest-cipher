@@ -1,11 +1,7 @@
 /*
 Author: Seth Hostetler
 Date: 10/18/2016
-Program: Rivest Cipher 4 implementation, for MTH 120
-Methods needed:
-    First half - find mask
-    second half - find _ letters
-    XOR letters with given message
+Program: Rivest Cipher 4 implementation
  */
 import java.lang.*;
 import java.util.HashMap;
@@ -95,33 +91,49 @@ public class RivestCipher4
     
     public static String extendKey(String key, int arraySize)
     {
+        /*
+        Description:    This method takes in a string, key, and extends by 
+                    concatenating copies of the string until it reaches 
+                    length arraySize.
+        */
+        
         String fullKey = "";
         while (fullKey.length() < arraySize)
         {
             fullKey += key;
-        }
-        //System.out.println(fullKey);
+        }        
         fullKey = fullKey.substring(0, arraySize);
-        //System.out.println(fullKey);
+        
         return fullKey;
     }
     
     public static int[] stringToNumArray(String pass)
     {
+        /*
+        Description:    This method takes in a string, and converts each
+                    character to its equivalent integer.
+                    Ex: A = 1, D = 4, Z = 26
+                        This method currently assumes that the characters 
+                    are captial letters only.
+        */
+        
         int[] output = new int[pass.length()];    
         for(int i = 0; i < output.length; i++)
         {
             output[i] = pass.charAt(i) - 64;
-            //System.out.print(output[i] + " ");
-            //System.out.println(output[i] + "-" + pass.charAt(i));
         }
+        
         return output;
     }
     
     public static void stateShuffle(int[] state, int[] key)
     {
+        /*
+        Description:    This method shuffles the state array, according
+                    to the RC4 algorithm.
+        */
 
-        for(int i = 0; i < state.length; i++)
+        for(int i = 0; i < state.length; i++)   //Initialize the state array
         {
             state[i] = i;
         } 
@@ -129,85 +141,75 @@ public class RivestCipher4
         int j = 0;
         for(int i = 0; i < state.length; i++)
         {
-            //System.out.println("J: " + j + " state[" + i + "]: " + state[i] + " and key[" + i + "]: " + key[i]);
             j = (j + state[i] + key[i]) % state.length;
-            //System.out.println("Switch state " + j + ": " + state[j] + " and " + i + ": " + state[i]);
             int temp = state[i];
             state[i] = state[j];
             state[j] = temp;
-            //System.out.println("After switch: state " + j + ": " + state[j] + " and " + i + ": " + state[i]);
-            //System.out.println();
         }
-//        for (int count = 0; count < state.length; count ++)
-//        {
-//            System.out.println(state[count]);
-//        }
+        
     }
     
     public static int[] numberGen(int[] state, int size)
     {
+        /*
+        Description:    This method generates (size) random numbers from the
+                    given state array.
+        */
+        
         int j = 0;
         int i = 0;
         int[] outputNumList = new int[size];
         while (i < size)
         {
             i++;
-            //System.out.println("i: " + i + "  j: " + j);
             if(i > size) { break;}
-            j = (j + state[i]) % state.length;
-            //System.out.println("i: " + i + "  j: " + j);            
+            j = (j + state[i]) % state.length;      
             int temp = state[i];
             state[i] = state[j];
             state[j] = temp;
-            //System.out.println("State[" + i + "]: " + state[i] + "; State[" + j + "]: " + state[j]);
             outputNumList[i-1] = state[(state[i] + state[j]) % state.length];
-            //System.out.println(answerAsNum[i]);
         }
-//        System.out.println();
-//        for (int count = 0; count < state.length; count ++)
-//        {
-//            System.out.println(state[count]);
-//        }
+        
         return outputNumList;
     }
     
     public static String[] numberToBinary(int[] numList, int bitSize)
     {
+        /*
+        Description:    This method converts an array of integers 
+                    into binary numbers of the given bit size.
+        */
         String[] binaryString = new String[numList.length];
         for (int count = 0; count < binaryString.length; count ++)
         {
             binaryString[count] = Integer.toBinaryString(numList[count]);
-            //System.out.println(binaryString[count] + " length: " + binaryString[count].length());
             if (binaryString[count].length() < bitSize)
             {
                 int lengthDifference = bitSize - binaryString[count].length();
-                /*
-                System.out.println("Difference in lengths: " + lengthDifference);
-                System.out.println(binaryString[count] + " length: " + binaryString[count].length());  
-                */
                 String lengthFixed = new String(new char[lengthDifference]).replace("\0", "0");
                 binaryString[count] = lengthFixed + binaryString[count];
-                /*
-                System.out.println(binaryString[count] + " length: " + binaryString[count].length());    
-                System.out.println("******");
-                */
             }
         }
-//        System.out.println("Answers in binary:");
-//        for (int count = 0; count < binaryString.length; count ++)
-//        {
-//            System.out.println(binaryString[count] + " ");
-//        } 
+        
         return binaryString;
     }
 
     public static String binaryXOR(String num1, String num2)
     {   
+        /*
+        Description:    This method caluclates the binary XOR value
+                    for two given strings.
+        */
+        
         return Integer.toBinaryString(Integer.parseInt(num1, 2) ^ Integer.parseInt(num2, 2));
     }
 
     public static int[] binaryStringToInt(String[] binary)
     {
+        /*
+        Description:    This method converts the binary values back to integer
+        */
+        
         int[] output = new int[binary.length];
         for(int i = 0; i < output.length; i++)
         {
